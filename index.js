@@ -147,7 +147,7 @@ function myFun() {
 
 
     //console.log(y)
-    console.log(x)
+    //console.log(x)
 
     const sum1 = x.reduce((a, b) => a + b, 0);
     avg1 = (sum1 / x.length) || 0;
