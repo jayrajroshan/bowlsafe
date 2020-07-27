@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
-const port = 3000
+const PORT = process.env.PORT || 3000;
 const path = require('path')
 var ws = require('ws')
 
@@ -55,8 +55,8 @@ const wsServer = new ws.Server({ noServer: true });
 // });
 
 
-const server = app.listen(process.env.PORT || 3000, () => {
-    console.log(`App running on port ${process.env.PORT || 3000}.`)
+const server = app.listen(PORT, () => {
+    console.log(`App running on port ${PORT}.`)
 })
 server.on('upgrade', (request, socket, head) => {
     wsServer.handleUpgrade(request, socket, head, socket => {
