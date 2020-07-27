@@ -73,14 +73,8 @@ const gets3 = (request, response) => {
             if (error) {
                 throw error
             }
+
             response.status(200).json(results.rows)
-
-            var res3 = results.rows
-
-            var z = []
-
-            for (var i in res3) z.push((res3[i].imu3_pitch) - (res3[0].imu3_pitch))
-            console.log(z)
         },
 
     )
@@ -89,6 +83,8 @@ const gets3 = (request, response) => {
 
 
 app.get('/s3', gets3)
+
+
 
 app.get('/home', (req, res) =>
     res.render('speedo'),
@@ -170,6 +166,8 @@ function myFun() {
 
     console.log("Sensor 1:" + sensor1[0].serial_no)
     console.log("Sensor 3:" + sensor3[0].serial_no)
+
+
 
 }
 setInterval(queryFunction, 1000);
