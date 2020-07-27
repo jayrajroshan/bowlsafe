@@ -18,7 +18,6 @@ const pool = new Pool({
 })
 
 app.set('view engine', 'ejs');
-//app.use(express.static('./public'));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 
@@ -37,14 +36,8 @@ app.get('/', (request, response) => {
 
 
 const wsServer = new ws.Server({ noServer: true });
-// wsServer.on('connection', socket => {
-//     var data = JSON.stringify({ "first": avg1, "second": avg2, "third": avg3 });
-//     setInterval(function () {
-//         socket.send(data)
-//         console.log(data)
-//     }, 2000);
 
-// });
+
 
 
 const server = app.listen(port, () => {
@@ -156,22 +149,6 @@ function myFun() {
     //console.log(y)
     console.log(x)
 
-    // sensor3 = sensorQuery3.rows;
-    // for (var i in sensor3) y.push((sensor3[i].imu3_roll))
-
-    //console.log(pitch3)
-
-
-
-    // diff = y.map(function (num, idx) {
-    //     return num - x[idx];
-    // });
-    //console.log(diff)
-
-    // pitchChange = pitch3.map(function (num, idx) {
-    //     return num - pitch1[idx];
-    // });
-
     const sum1 = x.reduce((a, b) => a + b, 0);
     avg1 = (sum1 / x.length) || 0;
 
@@ -192,7 +169,6 @@ function myFun() {
 
 
     var data = JSON.stringify({ "first": avg1, "second": avg21, "third": avg31 });
-    // wss.clients is an array of all connected clients
     wsServer.clients.forEach(function each(client) {
         client.send(data);
         console.log('Sent: ' + data);
@@ -213,26 +189,3 @@ function myFun() {
 
 }
 setInterval(queryFunction, 1000);
-//setInterval(broadcast, 1000);
-//queryFunction()
-
-// app.post('/home', function (req, res) {
-//     myFun()
-//     console.log(avg1)
-//     console.log(avg2)
-//     console.log(avg3)
-
-//      var data = JSON.stringify({ "first": avg1, "second": avg2, "third": avg3 });
-//      res.send(data);
-
-// })
-
-// setInterval(function () {
-//     myFun()
-//     console.log('Sensor 1: ' + sensorQuery1.rows[0].serial_no)
-//     console.log('Sensor 2: ' + sensorQuery3.rows[0].serial_no)
-//     console.log(avg1)
-//     console.log(avg21)
-//     console.log(avg31)
-//     console.log(sensorQuery3.rows)
-// }, 1000);

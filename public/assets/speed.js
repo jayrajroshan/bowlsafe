@@ -1,5 +1,4 @@
 var HOST = location.origin.replace(/^http/, 'ws')
-
 var ws = new WebSocket('HOST');
 
 ws.onopen = function () {
@@ -17,25 +16,6 @@ ws.onmessage = (e) => {
 
 
 
-// $(document).ready(function () {
-
-//   var speed;
-
-//   $.ajax({
-//     type: 'POST',
-//     url: '/home',
-//     data: speed,
-//     success: function (data) {
-//       const obj = JSON.parse(data);
-//       gauge.set(obj.first);
-//       gauge1.set(obj.second);
-//       gauge2.set(obj.third);
-//       console.log(data)
-
-//     }
-//   });
-// });
-
 var opts = {
   lines: 80, // smoother
   angle: 0.005, // not sure
@@ -46,17 +26,18 @@ var opts = {
     color: '#000000'
   },
   staticLabels: {
-    font: "10px sans-serif",  // Specifies font
+    font: "15px sans-serif",  // Specifies font
     labels: [-20, -5, 0, 5, 20],  // Print labels at these values
     color: "#000000",  // Optional: Label text color
     fractionDigits: 0  // Optional: Numerical precision. 0=round off.
   },
-  limitMax: 'false',
+  limitMin: 'true',
+  limitMax: 'true',
   staticZones: [
     { strokeStyle: "#F03E3E", min: -35, max: -20 }, // Red 
-    { strokeStyle: "#FFDD00", min: -20, max: -5 }, // Yellow
+    { strokeStyle: "#ffc107", min: -20, max: -5 }, // Yellow
     { strokeStyle: "#30B32D", min: -5, max: 5 }, // Green
-    { strokeStyle: "#FFDD00", min: 5, max: 20 }, // Yellow
+    { strokeStyle: "#ffc107", min: 5, max: 20 }, // Yellow
     { strokeStyle: "#F03E3E", min: 20, max: 35 }  // Red
   ], // division for color change
 
@@ -66,7 +47,7 @@ var opts = {
 };
 var target = document.getElementById('foo');
 var gauge = new Gauge(target).setOptions(opts);
-gauge.minValue = -35
+gauge.minValue = -35;
 gauge.maxValue = 35; // upper limit
 gauge.animationSpeed = 10;
 
@@ -88,11 +69,12 @@ var opts1 = {
     color: "#000000",  // Optional: Label text color
     fractionDigits: 0  // Optional: Numerical precision. 0=round off.
   },
-  limitMax: 'false',
+  limitMin: 'true',
+  limitMax: 'true',
   percentColors: [
-    [0.17, "#008000"],
-    [0.50, "#f9c802"],
-    [1, "#ff0000"],
+    [0.17, "#30B32D"],
+    [0.50, "#ffc107"],
+    [1, "#F03E3E"],
   ],
   strokeColor: '#E0E0E0',
   generateGradient: false
@@ -119,11 +101,12 @@ var opts2 = {
     color: "#000000",  // Optional: Label text color
     fractionDigits: 0  // Optional: Numerical precision. 0=round off.
   },
-  limitMax: 'false',
+  limitMax: 'true',
+  limitMin: 'true',
   percentColors: [
-    [0.25, "#008000"],
-    [0.50, "#f9c802"],
-    [1, "#ff0000"],
+    [0.25, "#30B32D"],
+    [0.50, "#ffc107"],
+    [1, "#F03E3E"],
   ],
   strokeColor: '#E0E0E0',
   generateGradient: false
