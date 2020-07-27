@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
 const path = require('path')
 var ws = require('ws')
 
@@ -34,14 +34,6 @@ app.get('/', (request, response) => {
 })
 
 
-var broadcast = function () {
-    var data = JSON.stringify({ "first": avg11, "second": avg22, "third": avg32 });
-    // wss.clients is an array of all connected clients
-    wsServer.clients.forEach(function each(client) {
-        client.send(data);
-        console.log('Sent: ' + data);
-    });
-}
 
 
 const wsServer = new ws.Server({ noServer: true });
@@ -80,9 +72,24 @@ const gets3 = (request, response) => {
     )
 }
 
+const gets1 = (request, response) => {
+    pool.query(
+        'SELECT * FROM sensordata11 ORDER BY serial_no DESC LIMIT 10',
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+
+            response.status(200).json(results.rows)
+        },
+
+    )
+}
+
 
 
 app.get('/s3', gets3)
+app.get('/s1', gets1)
 
 
 
@@ -123,55 +130,82 @@ function queryFunction() {
 
 var x = [];
 var y = [];
+var roll1 = [];
+var roll3 = [];
 var pitch3 = [];
 var pitch1 = [];
-var diff = [];
 var avg1 = null;
-var avg11 = null;
 var avg2 = null;
 var avg21 = null;
-var avg22 = null;
 var avg3 = null;
 var avg31 = null;
-var avg32 = null;
 
 function myFun() {
     sensor1 = sensorQuery1.rows;
-    for (var i in sensor1) x.push((sensor1[i].imu1_roll) - (sensor1[0].imu1_roll))
-    for (var i in sensor1) pitch1.push((sensor1[i].imu1_pitch) - (sensor1[0].imu1_pitch))
-
-
-
     sensor3 = sensorQuery3.rows;
-    for (var i in sensor3) y.push((sensor3[i].imu3_roll) - (sensor3[0].imu3_roll))
-    for (var i in sensor3) pitch3.push((sensor3[i].imu3_pitch) - (sensor3[0].imu3_pitch))
 
-    //console.log(sensor3[1])
+    for (var i in sensor1) roll1.push((sensor1[i].imu1_roll) + 3.87)
+    for (var i in sensor1) roll3.push((sensor3[i].imu3_roll) - 2.1)
+    for (var i in sensor3) x.push((roll3[i]) - (roll1[i]))
 
-    diff = y.map(function (num, idx) {
-        return num - x[idx];
-    });
+    for (var i in sensor3) pitch3.push((sensor3[i].imu3_pitch) - 78.5)
+    for (var i in sensor1) pitch1.push((sensor1[i].imu1_pitch) - 69.5)
+    for (var i in sensor1) y.push((pitch1[i]) - (pitch3[i]))
 
-    pitchChange = pitch3.map(function (num, idx) {
-        return num - pitch1[idx];
-    });
-    const sum1 = diff.reduce((a, b) => a + b, 0);
-    avg1 = (sum1 / diff.length) || 0;
+
+    //console.log(y)
+    console.log(x)
+
+    // sensor3 = sensorQuery3.rows;
+    // for (var i in sensor3) y.push((sensor3[i].imu3_roll))
+
+    //console.log(pitch3)
+
+
+
+    // diff = y.map(function (num, idx) {
+    //     return num - x[idx];
+    // });
+    //console.log(diff)
+
+    // pitchChange = pitch3.map(function (num, idx) {
+    //     return num - pitch1[idx];
+    // });
+
+    const sum1 = x.reduce((a, b) => a + b, 0);
+    avg1 = (sum1 / x.length) || 0;
+
+    //console.log(avg1)
 
     const sum2 = pitch3.reduce((a, b) => a + b, 0);
     avg2 = (sum2 / pitch3.length) || 0;
-    avg21 = Math.abs(avg2)
+    if (avg2 < 0) {
+        avg21 = Math.abs(avg2)
+    }
+    else {
+        avg21 = 0
+    }
 
-    const sum3 = pitchChange.reduce((a, b) => a + b, 0);
-    avg3 = (sum3 / pitchChange.length) || 0;
+    const sum3 = y.reduce((a, b) => a + b, 0);
+    avg3 = (sum3 / y.length) || 0;
     avg31 = Math.abs(avg3)
 
-    avg11 = (avg1 * 1000)
-    avg22 = (avg21 * 100)
-    avg32 = (avg31 * 1000)
-    console.log(avg11)
-    console.log(avg22)
-    console.log(avg32)
+
+    var data = JSON.stringify({ "first": avg1, "second": avg21, "third": avg31 });
+    // wss.clients is an array of all connected clients
+    wsServer.clients.forEach(function each(client) {
+        client.send(data);
+        console.log('Sent: ' + data);
+    });
+
+
+
+    roll1.length = 0
+    roll3.length = 0
+    x.length = 0
+    pitch3.length = 0
+    pitch1.length = 0
+    y.length = 0
 
 
     console.log("Sensor 1:" + sensor1[0].serial_no)
@@ -179,8 +213,8 @@ function myFun() {
 
 }
 setInterval(queryFunction, 1000);
-setInterval(broadcast, 1000);
-
+//setInterval(broadcast, 1000);
+//queryFunction()
 
 // app.post('/home', function (req, res) {
 //     myFun()
