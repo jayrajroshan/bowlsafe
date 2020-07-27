@@ -55,8 +55,8 @@ const wsServer = new ws.Server({ noServer: true });
 // });
 
 
-const server = app.listen(port, () => {
-    console.log(`App running on port ${port}.`)
+const server = app.listen(process.env.PORT || 3000, () => {
+    console.log(`App running on port ${process.env.PORT || 3000}.`)
 })
 server.on('upgrade', (request, socket, head) => {
     wsServer.handleUpgrade(request, socket, head, socket => {
