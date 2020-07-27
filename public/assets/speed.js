@@ -1,6 +1,4 @@
-var HOST = location.origin.replace(/^http/, 'ws')
-
-var ws = new WebSocket(HOST);
+var ws = new WebSocket('ws://localhost:3000');
 
 ws.onopen = function () {
   console.log('websocket is connected ...')

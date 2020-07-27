@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
-const PORT = process.env.PORT || 3000;
+const port = 3000
 const path = require('path')
 var ws = require('ws')
 
@@ -35,7 +35,7 @@ app.get('/', (request, response) => {
 
 
 var broadcast = function () {
-    var data = JSON.stringify({ "first": avg1, "second": avg21, "third": avg31 });
+    var data = JSON.stringify({ "first": avg11, "second": avg22, "third": avg32 });
     // wss.clients is an array of all connected clients
     wsServer.clients.forEach(function each(client) {
         client.send(data);
@@ -55,8 +55,8 @@ const wsServer = new ws.Server({ noServer: true });
 // });
 
 
-const server = app.listen(PORT, () => {
-    console.log(`App running on port ${PORT}.`)
+const server = app.listen(port, () => {
+    console.log(`App running on port ${port}.`)
 })
 server.on('upgrade', (request, socket, head) => {
     wsServer.handleUpgrade(request, socket, head, socket => {
@@ -127,16 +127,18 @@ var pitch3 = [];
 var pitch1 = [];
 var diff = [];
 var avg1 = null;
+var avg11 = null;
 var avg2 = null;
 var avg21 = null;
+var avg22 = null;
 var avg3 = null;
 var avg31 = null;
+var avg32 = null;
 
 function myFun() {
     sensor1 = sensorQuery1.rows;
     for (var i in sensor1) x.push((sensor1[i].imu1_roll) - (sensor1[0].imu1_roll))
     for (var i in sensor1) pitch1.push((sensor1[i].imu1_pitch) - (sensor1[0].imu1_pitch))
-    //console.log(sensor1[1])
 
 
 
@@ -164,10 +166,16 @@ function myFun() {
     avg3 = (sum3 / pitchChange.length) || 0;
     avg31 = Math.abs(avg3)
 
+    avg11 = (avg1 * 1000)
+    avg22 = (avg21 * 100)
+    avg32 = (avg31 * 1000)
+    console.log(avg11)
+    console.log(avg22)
+    console.log(avg32)
+
+
     console.log("Sensor 1:" + sensor1[0].serial_no)
     console.log("Sensor 3:" + sensor3[0].serial_no)
-
-
 
 }
 setInterval(queryFunction, 1000);
