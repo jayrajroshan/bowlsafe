@@ -156,7 +156,7 @@ function myFun() {
 
     for (var i in sensor2) roll2.push((sensor2[i].imu2_roll) + 9.19)
     for (var i in sensor3) roll3.push((sensor3[i].imu3_roll) - 2.1)
-    for (var i in sensor3) x.push((roll3[i]) - (roll2[i]))
+    for (var i in sensor3) x.push((2 * roll3[i]) - (roll2[i]))
 
     for (var i in sensor3) pitch3.push((sensor3[i].imu3_pitch) - 78.5)
     for (var i in sensor2) pitch2.push((sensor2[i].imu2_pitch) - 72.18)
