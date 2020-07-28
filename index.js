@@ -124,8 +124,10 @@ function queryFunction() {
 var x = [];
 var y = [];
 var roll1 = [];
+var roll2 = [];
 var roll3 = [];
 var pitch3 = [];
+var pitch2 = [];
 var pitch1 = [];
 var avg1 = null;
 var avg2 = null;
@@ -134,16 +136,16 @@ var avg3 = null;
 var avg31 = null;
 
 function myFun() {
-    sensor1 = sensorQuery1.rows;
+    sensor2 = sensorQuery2.rows;
     sensor3 = sensorQuery3.rows;
 
-    for (var i in sensor1) roll1.push((sensor1[i].imu1_roll) + 3.87)
-    for (var i in sensor1) roll3.push((sensor3[i].imu3_roll) - 2.1)
-    for (var i in sensor3) x.push((roll3[i]) - (roll1[i]))
+    for (var i in sensor2) roll2.push((sensor2[i].imu2_roll) + 9.19)
+    for (var i in sensor3) roll3.push((sensor3[i].imu3_roll) - 2.1)
+    for (var i in sensor3) x.push((roll3[i]) - (roll2[i]))
 
     for (var i in sensor3) pitch3.push((sensor3[i].imu3_pitch) - 78.5)
-    for (var i in sensor1) pitch1.push((sensor1[i].imu1_pitch) - 69.5)
-    for (var i in sensor1) y.push((pitch1[i]) - (pitch3[i]))
+    for (var i in sensor2) pitch2.push((sensor2[i].imu2_pitch) - 72.18)
+    for (var i in sensor2) y.push((pitch2[i]) - (pitch3[i]))
 
 
     //console.log(y)
@@ -177,14 +179,16 @@ function myFun() {
 
 
     roll1.length = 0
+    roll2.length = 0
     roll3.length = 0
     x.length = 0
     pitch3.length = 0
     pitch1.length = 0
+    pitch2.length = 0
     y.length = 0
 
 
-    console.log("Sensor 1:" + sensor1[0].serial_no)
+    console.log("Sensor 2:" + sensor2[0].serial_no)
     console.log("Sensor 3:" + sensor3[0].serial_no)
 
 }
