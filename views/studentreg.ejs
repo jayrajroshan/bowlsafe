@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="    https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css
+    "
+    />
+    <title>BowlSafe | Register</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+          <div class="card card shadow-lg bg-light text-center mb-3">
+            <div class="card-body">
+              <h1 class="mx-3 text-primary pb-3 border-bottom border-dark">
+                Register
+              </h1>
+              <form action="/studentreg" method="POST" class="mx-3">
+                <fieldset class="form-group">
+                  <div class="row">
+                    <legend class="col-form-label col-sm-4 pt-0">
+                      Category:
+                    </legend>
+                    <div class="col-sm-8">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="categories"
+                          id="gridRadios1"
+                          value="active"
+                          checked
+                        />
+                        <label class="form-check-label" for="gridRadios1">
+                          Under-12
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="categories"
+                          id="gridRadios2"
+                          value="inactive"
+                        />
+                        <label class="form-check-label" for="gridRadios2">
+                          Under-17
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="categories"
+                          id="gridRadios2"
+                          value="inactive"
+                        />
+                        <label class="form-check-label" for="gridRadios2">
+                          Under-19
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+
+                <div class="form-group">
+                  <label for="Name">Player's Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="pname"
+                    name="pname"
+                    aria-describedby="Name"
+                    placeholder="Enter player's name"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="Name">Father's Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="fname"
+                    name="fname"
+                    aria-describedby="Name"
+                    placeholder="Enter Father's name"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="Name">Mother's Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="mname"
+                    name="mname"
+                    aria-describedby="Name"
+                    placeholder="Enter mother's name"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="DoB">Date of Birth</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="dob"
+                    name="dob"
+                    aria-describedby="DateofBirth"
+                    placeholder="Date of Birth"
+                  />
+                </div>
+                <div class="form-row align-items-center">
+                  <div class="col-auto my-1">
+                    <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"
+                      >Gender</label
+                    >
+                    <h6>Gender</h6>
+                    <select
+                      class="custom-select mr-sm-2"
+                      id="inlineFormCustomSelect"
+                      name="gender"
+                    >
+                      <option value="1">Male</option>
+                      <option value="2">Female</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="Username">Mobile Number</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="mobile"
+                    name="mobile"
+                    aria-describedby="mobile"
+                    placeholder="Enter mobile number"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="Email">Email address</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter email"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="Height">Height</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="height"
+                    name="height"
+                    aria-describedby="Height"
+                    placeholder="Enter height (in inches)"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="Weight">Weight</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="weight"
+                    name="weight"
+                    aria-describedby="Weight"
+                    placeholder="Enter weight (in kgs)"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="Waist">Waist</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="waist"
+                    name="waist"
+                    aria-describedby="waist"
+                    placeholder="Enter waist size (in inches)"
+                  />
+                </div>
+                <fieldset class="form-group">
+                  <div class="row">
+                    <legend class="col-form-label col-sm-4 pt-0">
+                      T-shirt size
+                    </legend>
+                    <div class="col-sm-8">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="tshirt"
+                          id="gridRadios1"
+                          value="active"
+                          checked
+                        />
+                        <label class="form-check-label" for="gridRadios1">
+                          Small
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="tshirt"
+                          id="gridRadios2"
+                          value="inactive"
+                        />
+                        <label class="form-check-label" for="gridRadios2">
+                          Medium
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="tshirt"
+                          id="gridRadios2"
+                          value="inactive"
+                        />
+                        <label class="form-check-label" for="gridRadios2">
+                          Large
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div class="form-group">
+                  <label for="exampleFormControlTextarea1">Address</label>
+                  <textarea
+                    class="form-control"
+                    id="addr"
+                    name="addr"
+                    rows="3"
+                  ></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="username"> Enter Username</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    name="username"
+                    aria-describedby="username"
+                    placeholder="Enter username"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="Password">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                  />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
