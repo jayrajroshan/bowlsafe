@@ -117,6 +117,8 @@ function myFun() {
     console.log(Lastid)
     sensor3 = sensorQuery3.rows[0];
     console.log(sensor3.speed);
+    console.log("Last speed");
+    console.log(LastSpeed);
     var id = sensor3.serial_no;
     var sensor_id = sensor3.id;
     var speed = sensor3.speed;
@@ -160,29 +162,32 @@ function myFun() {
     avg31 = Math.abs(avg3)
 
 
-    if (id > Lastid) {
-        DelSpeed = LastSpeed - speed;
-        if (DelSpeed > 6) {
-            BowlCount += 1;
+    DelSpeed = LastSpeed - speed;
+    if (DelSpeed > 6) {
+        BowlCount += 1;
 
-            console.log(BowlCount)
-            pool.query(
-                'INSERT INTO bowl_result (id,rotation,hyper_extension,posteriorly_rotated,feed_time,speed) VALUES ($1,$2,$3,$4,$5,$6)', [sensor_id, avg1, avg2, avg3, formattedDate, LastSpeed],
-                (error, results) => {
-                    if (error) {
-                        throw error
-                    }
+        console.log("DelSpeed")
+        console.log(DelSpeed)
+        console.log("BowlCount")
+        console.log(BowlCount)
 
-                    console.log("New bowl added")
+        pool.query(
+            'INSERT INTO bowl_result (id,rotation,hyper_extenstion,posteriorly_rotated,feed_time,speed) VALUES ($1,$2,$3,$4,$5,$6)', [sensor_id, avg1, avg2, avg3, formattedDate, LastSpeed],
+            (error, results) => {
+                if (error) {
+                    throw error
+                }
 
-                },
+                console.log("New bowl added")
 
-            );
-        }
+            },
+
+        );
+
     }
 
-    Lastid = null
-    LastSpeed = null
+    // Lastid = null
+    // LastSpeed = null
     Lastid = id
     LastSpeed = speed
     console.log(Lastid)
