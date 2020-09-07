@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BowlSafe | Player</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        height: 100vh;
+        font-family: "Nunito", sans-serif;
+        background-image: linear-gradient(
+            339deg,
+            rgba(47, 47, 47, 0.07) 0%,
+            rgba(47, 47, 47, 0.07) 42%,
+            transparent 42%,
+            transparent 99%,
+            rgba(17, 17, 17, 0.02) 99%,
+            rgba(17, 17, 17, 0.02) 100%
+          ),
+          linear-gradient(
+            257deg,
+            rgba(65, 65, 65, 0.02) 0%,
+            rgba(65, 65, 65, 0.02) 11%,
+            transparent 11%,
+            transparent 92%,
+            rgba(53, 53, 53, 0.02) 92%,
+            rgba(53, 53, 53, 0.02) 100%
+          ),
+          linear-gradient(
+            191deg,
+            rgba(5, 5, 5, 0) 0%,
+            rgba(5, 5, 5, 0) 1%,
+            transparent 1%,
+            transparent 45%,
+            rgba(19, 19, 19, 0.08) 45%,
+            rgba(19, 19, 19, 0.08) 100%
+          ),
+          linear-gradient(
+            29deg,
+            rgba(28, 28, 28, 0.07) 0%,
+            rgba(28, 28, 28, 0.07) 33%,
+            transparent 33%,
+            transparent 40%,
+            rgba(220, 220, 220, 0.09) 40%,
+            rgba(220, 220, 220, 0.09) 100%
+          ),
+          linear-gradient(90deg, rgb(255, 255, 255), rgb(255, 255, 255));
+      }
+    </style>
+    <!-- <script src="/public/assets/speed-data.js"></script> -->
+  </head>
+
+  <body>
+    <nav class="navbar shadow-sm">
+      <div class="container">
+        <a class="navbar-brand text-primary" href="#"
+          ><h2><strong>BowlSafe</strong></h2></a
+        >
+        <button
+          class="navbar-toggler navbar-light"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="/logout"
+              >Logout <span class="sr-only">(current)</span></a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h2 class="py-3 text-primary">Hi <%= name %></h2>
+    </div>
+
+    <h1>BowlCount <%= bowl %></h1>
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

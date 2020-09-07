@@ -544,3 +544,20 @@ function isCoach(req, res, next) {
     console.log("Coach False")
     res.redirect('/login')
 }
+
+app.get('/report', (req, res) => {
+    pool.query(
+        'SELECT COUNT(*) FROM sensordata31 WHERE id::text LIKE $1', [req.user.device_id],
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+            clearInterval(interval);
+            console.log(results)
+            res.render('report', { name: req.user.user_name, bowl: results.rows[0].count })
+
+        },
+
+    )
+
+})
