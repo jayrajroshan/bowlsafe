@@ -131,6 +131,10 @@
                   <span class="text-<%= bowl[i].hyper_extenstion_c %>" >Hyper Extension: </span><%= bowl[i].hyper_extenstion %>
                   <br/>
                   <span class="text-<%= bowl[i].posteriorly_rotated_c %>" >Posteriorly Rotated: </span><%= bowl[i].posteriorly_rotated %>
+                  <!-- <%=  unixTimestamp = bowl[i].feed_time%>
+                  <%=  milliseconds = unixTimestamp * 1000 %>
+                  <%=  dateObject = new Date(milliseconds) %>
+                  <%=  humanDateFormat = dateObject.toLocaleString() %> -->
                   <script>
                     unixTimestamp = bowl[i].feed_time;
                     milliseconds = unixTimestamp * 1000;

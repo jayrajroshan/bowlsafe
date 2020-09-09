@@ -77,7 +77,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="/home"
+            <a class="nav-item nav-link active" href="/phome"
               >Home <span class="sr-only">(current)</span></a
             >
             <a class="nav-item nav-link active" href="/logout"
@@ -128,11 +128,10 @@
                     unixTimestamp = bowl[i].feed_time;
                     milliseconds = unixTimestamp * 1000;
                     dateObject = new Date(milliseconds);
-                    humanDateFormat = dateObject.toLocaleString("en-IN", {day: "numeric"});
+                    humanDateFormat = dateObject.toLocaleString();
                   </script>
                   <br/>
                   <span>Time: </span><%= humanDateFormat %>
-                  <br/>
               </li>
           <% } %>
       </ul>
