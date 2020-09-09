@@ -107,11 +107,8 @@ function myFun() {
 
 
     now = Date.now()
-    console.log(now)
-    var dt = dateTime.create(now);
-    var formattedDate = dt.format('Y-m-d H:M:S.N');
     console.log("Current Time")
-    console.log(formattedDate)
+    console.log(now)
 
 
     console.log(Lastid)
@@ -161,6 +158,36 @@ function myFun() {
     avg3 = (sum3 / y.length) || 0;
     avg31 = Math.abs(avg3)
 
+    if (avg1 > -5 && avg1 < 5) {
+        rotation_c = "green"
+    }
+    else if (avg1 < -20 && avg1 > -5 || avg1 < 5 && avg1 > 20) {
+        rotation_c = "yellow"
+    }
+    else {
+        rotation_c = "red"
+    }
+
+    if (avg21 > 0 && avg21 < 5) {
+        hyper_c = "green"
+    }
+    else if (avg21 > 5 && avg21 < 15) {
+        hyper_c = "yellow"
+    }
+    else {
+        hyper_c = "red"
+    }
+
+
+    if (avg31 > 0 && avg31 < 5) {
+        post_c = "green"
+    }
+    else if (avg31 > 5 && avg31 < 13) {
+        post_c = "yellow"
+    }
+    else {
+        post_c = "red"
+    }
 
     DelSpeed = LastSpeed - speed;
     if (DelSpeed > 6) {
@@ -172,7 +199,7 @@ function myFun() {
         console.log(BowlCount)
 
         pool.query(
-            'INSERT INTO bowl_result (id,rotation,hyper_extenstion,posteriorly_rotated,feed_time,speed) VALUES ($1,$2,$3,$4,$5,$6)', [sensor_id, avg1, avg2, avg3, formattedDate, LastSpeed],
+            'INSERT INTO bowl_result (id,rotation,rotation_c,hyper_extenstion,hyper_extenstion_c,posteriorly_rotated,posteriorly_rotated_c,feed_time,balls) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)', [sensor_id, avg1, rotation_c, avg21, hyper_c, avg31, post_c, now, BowlCount],
             (error, results) => {
                 if (error) {
                     throw error

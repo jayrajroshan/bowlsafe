@@ -14,6 +14,9 @@ const flash = require('express-flash')
 const session = require('express-session')
 var dateTime = require('node-datetime');
 var dt = dateTime.create();
+var timestamp = require("unix-timestamp")
+
+timestamp.round = true
 
 
 const initializePassport = require('./passport-config')
@@ -132,6 +135,7 @@ app.get('/home', checkAuthenticated, function (req, res, next) {
     if (req.user.iscoach === true) {
         console.log("Coach True");
         let player = req.query.player;
+        console.log(player)
         clearInterval(interval);
         pool.query(
             'SELECT user_name FROM user_registration WHERE coach_name = $1', [req.user.user_name],
@@ -410,7 +414,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
 })
 
 
-app.get('/studentreg', isCoach, (req, res) => {
+app.get('/studentreg', checkAuthenticated, isCoach, (req, res) => {
     res.render('studentreg')
     clearInterval(interval);
 })
@@ -461,7 +465,7 @@ app.post('/studentreg', async (req, res) => {
 })
 
 
-app.get('/update', isCoach, (req, res) => {
+app.get('/update', checkAuthenticated, isCoach, (req, res) => {
     pool.query(
         'SELECT user_name FROM user_registration WHERE coach_name LIKE $1', [req.user.user_name],
         (error, results) => {
@@ -519,22 +523,6 @@ function checkNotAuthenticated(req, res, next) {
     next()
 }
 
-const user = (request, response) => {
-    pool.query(
-        'SELECT * FROM user_registration',
-        // 'SELECT * FROM coach_registration WHERE email_id LIKE $1', ['rahul@gmail.com'],
-        (error, results) => {
-            if (error) {
-                throw error
-            }
-
-            response.status(200).json(results.rows)
-        },
-
-    )
-}
-
-app.get('/user', user)
 
 function isCoach(req, res, next) {
     if (req.user.iscoach === true) {
@@ -545,19 +533,126 @@ function isCoach(req, res, next) {
     res.redirect('/login')
 }
 
-app.get('/report', (req, res) => {
+app.get('/report', checkAuthenticated, (req, res) => {
+    let times = req.query.time;
+    console.log("Time is" + times)
+
+    now = timestamp.now()
+    Lday = timestamp.now("-1d")
+    Lweek = timestamp.now("-1w")
+    Lmonth = timestamp.now("-1M")
+    console.log(now)
+    if (times == "Daily") {
+        console.log("Yesterday was:")
+        console.log(Lday)
+        clearInterval(interval);
+        pool.query(
+            'SELECT * FROM bowl_result WHERE id::text LIKE $1 AND feed_time > $2', [req.user.device_id, Lday],
+            (error, results) => {
+                if (error) {
+                    throw error
+                }
+                clearInterval(interval);
+                console.log(req.user.device_id)
+                res.render('report', { name: req.user.user_name, first: times, bowl: results.rows })
+
+            },
+
+        )
+
+    }
+    else if (times == "Weekly") {
+        console.log("Last week was:")
+        console.log(Lweek)
+        clearInterval(interval);
+        pool.query(
+            'SELECT * FROM bowl_result WHERE id::text LIKE $1 AND feed_time > $2', [req.user.device_id, Lweek],
+            (error, results) => {
+                if (error) {
+                    throw error
+                }
+                clearInterval(interval);
+                console.log(req.user.device_id)
+                res.render('report', { name: req.user.user_name, first: times, bowl: results.rows })
+
+            },
+
+        )
+
+    }
+    else if (times == "Monthly") {
+        console.log("Last month was:")
+        console.log(Lmonth)
+        clearInterval(interval);
+        pool.query(
+            'SELECT * FROM bowl_result WHERE id::text LIKE $1 AND feed_time > $2', [req.user.device_id, Lmonth],
+            (error, results) => {
+                if (error) {
+                    throw error
+                }
+                clearInterval(interval);
+                console.log(req.user.device_id)
+                res.render('report', { name: req.user.user_name, first: times, bowl: results.rows })
+
+            },
+
+        )
+
+    }
+    else {
+        console.log("Today is:")
+        console.log(now)
+        pool.query(
+            'SELECT * FROM bowl_result WHERE id::text LIKE $1', [req.user.device_id],
+            (error, results) => {
+                if (error) {
+                    throw error
+                }
+                clearInterval(interval);
+                console.log(req.user.device_id)
+                res.render('report', { name: req.user.user_name, first: times, bowl: results.rows })
+
+            },
+
+        )
+    }
+
+
+})
+
+app.post('/report', async (req, res) => {
+    try {
+        console.log(req.body)
+        const time_frame = req.body.time_f
+        res.redirect('report/?time=' + time_frame)
+    }
+    catch{
+        console.log("Error")
+    }
+})
+
+//-----------------------------------Test-------------------------------------------
+const getres = (request, response) => {
+
+
+
+    const id = 3
     pool.query(
-        'SELECT COUNT(*) FROM sensordata31 WHERE id::text LIKE $1', [req.user.device_id],
+        'SELECT * FROM bowl_result',
         (error, results) => {
             if (error) {
                 throw error
             }
-            clearInterval(interval);
-            console.log(results)
-            res.render('report', { name: req.user.user_name, bowl: results.rows[0].count })
+            response.status(200).json(results.rows)
 
         },
 
     )
+}
 
-})
+
+
+
+
+
+app.get('/rep', getres)

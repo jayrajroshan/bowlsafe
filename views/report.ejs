@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BowlSafe | Player</title>
+    <title>BowlSafe | Report</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -77,6 +77,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="/home"
+              >Home <span class="sr-only">(current)</span></a
+            >
             <a class="nav-item nav-link active" href="/logout"
               >Logout <span class="sr-only">(current)</span></a
             >
@@ -87,9 +90,55 @@
 
     <div class="container">
       <h2 class="py-3 text-primary">Hi <%= name %></h2>
+
+      <h3>Total Bowls: <%= bowl.length %></h3>
+
+        <h5>Time Frame</h5>
+        <form class="pb-3" action="/report" method="POST">
+          <select
+            class="form-control"
+            id="select"
+            name="time_f"
+            onchange="this.form.submit()"
+          >
+            <option><%= first %></option>
+            <option>Daily</option>
+            <option>Weekly</option>
+            <option>Monthly</option>
+
+          </select>
+          <noscript><input type="submit" value="Submit" /></noscript>
+        </form>
+
+      <ul class="list-group">
+          <% for(var i=0; i<bowl.length; i++) {%>
+              <li class="list-group-item">
+                  <span " >Bowl Number: </span><%= bowl[i].balls %>
+                  <br/>
+                  <span class="text-<%= bowl[i].rotation_c %>" >Rotation: </span><%= bowl[i].rotation %>
+                  <br/>
+                  <span class="text-<%= bowl[i].hyper_extenstion_c %>" >Hyper Extension: </span><%= bowl[i].hyper_extenstion %>
+                  <br/>
+                  <span class="text-<%= bowl[i].posteriorly_rotated_c %>" >Posteriorly Rotated: </span><%= bowl[i].posteriorly_rotated %>
+                  <!-- <%=  unixTimestamp = bowl[i].feed_time%>
+                  <%=  milliseconds = unixTimestamp * 1000 %>
+                  <%=  dateObject = new Date(milliseconds) %>
+                  <%=  humanDateFormat = dateObject.toLocaleString() %> -->
+                  <script>
+                    unixTimestamp = bowl[i].feed_time;
+                    milliseconds = unixTimestamp * 1000;
+                    dateObject = new Date(milliseconds);
+                    humanDateFormat = dateObject.toLocaleString("en-IN", {day: "numeric"});
+                  </script>
+                  <br/>
+                  <span>Time: </span><%= humanDateFormat %>
+                  <br/>
+              </li>
+          <% } %>
+      </ul>
     </div>
 
-    <h1>BowlCount <%= bowl %></h1>
+    
 
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
