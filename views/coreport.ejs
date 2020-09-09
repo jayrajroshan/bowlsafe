@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BowlSafe | Coach</title>
+    <title>BowlSafe | Report</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -77,12 +77,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/studentreg"
-              >Register Students</a
-            >
-
-            <a class="nav-item nav-link active" href="/update"
-              >Update device <span class="sr-only">(current)</span></a
+            <a class="nav-item nav-link active" href="/home"
+              >Home <span class="sr-only">(current)</span></a
             >
             <a class="nav-item nav-link active" href="/logout"
               >Logout <span class="sr-only">(current)</span></a
@@ -93,82 +89,63 @@
     </nav>
 
     <div class="container">
-      <h2 class="py-3 text-primary">Hi <%= name %></h2>
-    </div>
-
-    <div class="container mb-4 text-primary">
-      <h5>Select player</h5>
-      <form action="/home" method="POST">
-        <select
-          class="form-control"
-          id="sel1"
-          name="player"
-          onchange="this.form.submit()"
+      <h2 class="py-1 text-primary">Hi <%= name %></h2>
+        <a
+          href="/home?player=<%= player %>"
+          class="btn btn-primary mb-2"
+          role="button"
+          aria-disabled="true"
+          >Go to Dashboard</a
         >
-          <option><%= first %></option>
-          <% for(var i=0; i < data.length; i++) { %>
-          <option><%= data[i].user_name %></option>
-          <% } %>
-        </select>
-        <noscript><input type="submit" value="Submit" /></noscript>
-      </form>
-    </div>
 
-    <div class="container">
-      <a
-        href="/coreport/?player=<%= first %>"
-        class="btn btn-primary mb-2"
-        role="button"
-        aria-disabled="true"
-        >Get Report</a
-      >
-    </div>
-
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4">
-          <div class="card shadow-lg bg-light text-center mb-3">
-            <div class="card-body">
-              <h5 class="card-title text-primary">LRS & RRS Vs LMB</h5>
-              <canvas id="foo"></canvas>
-              <div class="container-fluid">
-                <span class="badge badge-pill badge-success">Safe</span>
-                <span class="badge badge-pill badge-warning">Caution</span>
-                <span class="badge badge-pill badge-danger">Alert</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4">
-          <div class="card shadow-lg bg-light text-center mb-3">
-            <div class="card-body">
-              <h5 class="card-title text-primary">Hyper-Extension</h5>
-              <canvas id="foo1"></canvas>
-              <div class="container-fluid">
-                <span class="badge badge-pill badge-success">Safe</span>
-                <span class="badge badge-pill badge-warning">Caution</span>
-                <span class="badge badge-pill badge-danger">Alert</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4 d-flex flex-column justify-content-center">
-          <div class="card shadow-lg bg-light text-center mb-3">
-            <div class="card-body">
-              <h5 class="card-title text-primary">Posteriorly Rotated</h5>
-              <canvas id="foo2"></canvas>
-              <div class="container-fluid">
-                <span class="badge badge-pill badge-success">Safe</span>
-                <span class="badge badge-pill badge-warning">Caution</span>
-                <span class="badge badge-pill badge-danger">Alert</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="container mb-1 text-primary">
       </div>
+      <h3>Report for: <%= player %></h3>
+      <h4>Total Bowls: <%= bowl.length %></h4>
+
+        <h5>Time Frame</h5>
+        <form class="pb-3" action="/coreport" method="POST">
+        <input type="hidden" name="player" value="<%= player %>" />
+          <select
+            class="form-control"
+            id="select"
+            name="time_f"
+            onchange="this.form.submit()"
+          >
+            <option><%= first %></option>
+            <option>Daily</option>
+            <option>Weekly</option>
+            <option>Monthly</option>
+
+          </select>
+          <noscript><input type="submit" value="Submit" /></noscript>
+        </form>
+
+      <ul class="list-group">
+          <% for(var i=0; i<bowl.length; i++) {%>
+              <li class="list-group-item">
+                  <span " >Bowl Number: </span><%= bowl[i].balls %>
+                  <br/>
+                  <span class="text-<%= bowl[i].rotation_c %>" >Rotation: </span><%= bowl[i].rotation %>
+                  <br/>
+                  <span class="text-<%= bowl[i].hyper_extenstion_c %>" >Hyper Extension: </span><%= bowl[i].hyper_extenstion %>
+                  <br/>
+                  <span class="text-<%= bowl[i].posteriorly_rotated_c %>" >Posteriorly Rotated: </span><%= bowl[i].posteriorly_rotated %>
+                  <script>
+                    unixTimestamp = bowl[i].feed_time;
+                    milliseconds = unixTimestamp * 1000;
+                    dateObject = new Date(milliseconds);
+                    humanDateFormat = dateObject.toLocaleString("en-IN", {day: "numeric"});
+                  </script>
+                  <br/>
+                  <span>Time: </span><%= humanDateFormat %>
+                  <br/>
+              </li>
+          <% } %>
+      </ul>
     </div>
+
+    
 
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -185,7 +162,5 @@
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
       crossorigin="anonymous"
     ></script>
-    <script src="/public/assets/gauge.min.js"></script>
-    <script src="/public/assets/speed.js"></script>
   </body>
 </html>
