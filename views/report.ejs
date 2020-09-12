@@ -55,6 +55,39 @@
           linear-gradient(90deg, rgb(255, 255, 255), rgb(255, 255, 255));
       }
     </style>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script>
+          //const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+          //const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+          const vw = window.innerWidth;
+          const vh = window.innerHeight;
+
+          google.charts.load('current', {'packages':['line']});
+          google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+
+              var data = new google.visualization.DataTable();
+              data.addColumn('number', 'Bowl');
+              data.addColumn('number', 'Rotation');
+              data.addColumn('number', 'Hyper Extension');
+              data.addColumn('number', 'Posteriorly Rotated');
+
+              data.addRows([<%= graph%>]);
+              var options = {
+                chart: {
+                  title: 'Overview of bowling',
+                },
+                legend: { position: 'top' },
+                width:  (vw*9)/10,
+                height: (vh*4)/10
+              };
+
+              var chart = new google.charts.Line(document.getElementById('linechart_material'));
+
+              chart.draw(data, google.charts.Line.convertOptions(options));
+            }
+        </script>
     <!-- <script src="/public/assets/speed-data.js"></script> -->
   </head>
 
@@ -109,10 +142,15 @@
           </select>
           <noscript><input type="submit" value="Submit" /></noscript>
         </form>
+      </div>
+      <div class="container-fluid">
+        <div class="mb-3 " id="linechart_material"></div>
+      </div>
 
-      <ul class="list-group">
-          <% for(var i=0; i<bowl.length; i++) {%>
-              <li class="list-group-item">
+      <div class="container">
+          <ul class="list-group ">
+            <% for(var i=0; i<bowl.length; i++) {%>
+                <li class="list-group-item ">
                   <span " >Bowl Number: </span><%= bowl[i].balls %>
                   <br/>
                   <span class="text-<%= bowl[i].rotation_c %>" >Rotation: </span><%= bowl[i].rotation %>
@@ -124,18 +162,14 @@
                   <%=  milliseconds = unixTimestamp * 1000 %>
                   <%=  dateObject = new Date(milliseconds) %>
                   <%=  humanDateFormat = dateObject.toLocaleString() %> -->
-                  <script>
-                    unixTimestamp = bowl[i].feed_time;
-                    milliseconds = unixTimestamp * 1000;
-                    dateObject = new Date(milliseconds);
-                    humanDateFormat = dateObject.toLocaleString();
-                  </script>
                   <br/>
                   <span>Time: </span><%= humanDateFormat %>
               </li>
-          <% } %>
-      </ul>
-    </div>
+            <% } %>
+          </ul>
+      </div>
+        
+      
 
     
 

@@ -15,6 +15,8 @@ const session = require('express-session')
 var dateTime = require('node-datetime');
 var dt = dateTime.create();
 var timestamp = require("unix-timestamp")
+let pdf = require("html-pdf");
+
 
 timestamp.round = true
 
@@ -76,56 +78,6 @@ server.on('upgrade', (request, socket, head) => {
     });
 });
 
-
-
-const gets3 = (request, response) => {
-    const id = 3
-    pool.query(
-        'SELECT * FROM sensordata31 WHERE id::text LIKE $1 ORDER BY serial_no DESC LIMIT 10', [id],
-        (error, results) => {
-            if (error) {
-                throw error
-            }
-
-            response.status(200).json(results.rows)
-        },
-
-    )
-}
-
-const gets1 = (request, response) => {
-    pool.query(
-        'SELECT * FROM sensordata11 ORDER BY serial_no DESC LIMIT 10', ['1'],
-        (error, results) => {
-            if (error) {
-                throw error
-            }
-
-            response.status(200).json(results.rows)
-        },
-
-    )
-}
-
-const gets2 = (request, response) => {
-    pool.query(
-        'SELECT * FROM sensordata21 ORDER BY serial_no DESC LIMIT 10',
-        (error, results) => {
-            if (error) {
-                throw error
-            }
-
-            response.status(200).json(results.rows)
-        },
-
-    )
-}
-
-
-
-app.get('/s3', gets3)
-app.get('/s2', gets2)
-app.get('/s1', gets1)
 
 
 
@@ -536,7 +488,7 @@ function isCoach(req, res, next) {
 app.get('/report', checkAuthenticated, (req, res) => {
     let times = req.query.time;
     console.log("Time is" + times)
-
+    bowl = "No data"
     now = timestamp.now()
     Lday = timestamp.now("-1d")
     Lweek = timestamp.now("-1w")
@@ -553,8 +505,16 @@ app.get('/report', checkAuthenticated, (req, res) => {
                     throw error
                 }
                 clearInterval(interval);
+                rows_res = results.rows.length
                 console.log(req.user.device_id)
-                res.render('report', { name: req.user.user_name, first: times, bowl: results.rows })
+                x = []
+                for (var i = 0; i < rows_res; i++) {
+                    x.push("[" + results.rows[i].balls)
+                    x.push(results.rows[i].rotation)
+                    x.push(results.rows[i].hyper_extenstion)
+                    x.push(results.rows[i].posteriorly_rotated + "]")
+                }
+                res.render('report', { name: req.user.user_name, first: times, bowl: results.rows, graph: x })
 
             },
 
@@ -572,8 +532,16 @@ app.get('/report', checkAuthenticated, (req, res) => {
                     throw error
                 }
                 clearInterval(interval);
+                rows_res = results.rows.length
                 console.log(req.user.device_id)
-                res.render('report', { name: req.user.user_name, first: times, bowl: results.rows })
+                x = []
+                for (var i = 0; i < rows_res; i++) {
+                    x.push("[" + results.rows[i].balls)
+                    x.push(results.rows[i].rotation)
+                    x.push(results.rows[i].hyper_extenstion)
+                    x.push(results.rows[i].posteriorly_rotated + "]")
+                }
+                res.render('report', { name: req.user.user_name, first: times, bowl: results.rows, graph: x })
 
             },
 
@@ -591,8 +559,16 @@ app.get('/report', checkAuthenticated, (req, res) => {
                     throw error
                 }
                 clearInterval(interval);
+                rows_res = results.rows.length
                 console.log(req.user.device_id)
-                res.render('report', { name: req.user.user_name, first: times, bowl: results.rows })
+                x = []
+                for (var i = 0; i < rows_res; i++) {
+                    x.push("[" + results.rows[i].balls)
+                    x.push(results.rows[i].rotation)
+                    x.push(results.rows[i].hyper_extenstion)
+                    x.push(results.rows[i].posteriorly_rotated + "]")
+                }
+                res.render('report', { name: req.user.user_name, first: times, bowl: results.rows, graph: x })
 
             },
 
@@ -610,7 +586,17 @@ app.get('/report', checkAuthenticated, (req, res) => {
                 }
                 clearInterval(interval);
                 console.log(req.user.device_id)
-                res.render('report', { name: req.user.user_name, first: times, bowl: results.rows })
+                rows_res = results.rows.length
+                console.log("Rows = " + rows_res)
+                x = []
+                for (var i = 0; i < rows_res; i++) {
+                    x.push("[" + results.rows[i].balls)
+                    x.push(results.rows[i].rotation)
+                    x.push(results.rows[i].hyper_extenstion)
+                    x.push(results.rows[i].posteriorly_rotated + "]")
+                }
+                console.log("Date is: \n" + x)
+                res.render('report', { name: req.user.user_name, first: times, bowl: results.rows, graph: x })
 
             },
 
@@ -668,7 +654,16 @@ app.get('/coreport', checkAuthenticated, (req, res) => {
                             }
                             clearInterval(interval);
                             console.log(req.user.device_id)
-                            res.render('coreport', { name: req.user.user_name, player: player, first: times, bowl: results.rows })
+                            rows_res = results.rows.length
+                            console.log("Rows = " + rows_res)
+                            x = []
+                            for (var i = 0; i < rows_res; i++) {
+                                x.push("[" + results.rows[i].balls)
+                                x.push(results.rows[i].rotation)
+                                x.push(results.rows[i].hyper_extenstion)
+                                x.push(results.rows[i].posteriorly_rotated + "]")
+                            }
+                            res.render('coreport', { name: req.user.user_name, player: player, first: times, bowl: results.rows, graph: x })
 
                         },
 
@@ -687,7 +682,16 @@ app.get('/coreport', checkAuthenticated, (req, res) => {
                             }
                             clearInterval(interval);
                             console.log(req.user.device_id)
-                            res.render('coreport', { name: req.user.user_name, player: player, first: times, bowl: results.rows })
+                            rows_res = results.rows.length
+                            console.log("Rows = " + rows_res)
+                            x = []
+                            for (var i = 0; i < rows_res; i++) {
+                                x.push("[" + results.rows[i].balls)
+                                x.push(results.rows[i].rotation)
+                                x.push(results.rows[i].hyper_extenstion)
+                                x.push(results.rows[i].posteriorly_rotated + "]")
+                            }
+                            res.render('coreport', { name: req.user.user_name, player: player, first: times, bowl: results.rows, graph: x })
 
                         },
 
@@ -706,7 +710,16 @@ app.get('/coreport', checkAuthenticated, (req, res) => {
                             }
                             clearInterval(interval);
                             console.log(req.user.device_id)
-                            res.render('coreport', { name: req.user.user_name, player: player, first: times, bowl: results.rows })
+                            rows_res = results.rows.length
+                            console.log("Rows = " + rows_res)
+                            x = []
+                            for (var i = 0; i < rows_res; i++) {
+                                x.push("[" + results.rows[i].balls)
+                                x.push(results.rows[i].rotation)
+                                x.push(results.rows[i].hyper_extenstion)
+                                x.push(results.rows[i].posteriorly_rotated + "]")
+                            }
+                            res.render('coreport', { name: req.user.user_name, player: player, first: times, bowl: results.rows, graph: x })
 
                         },
 
@@ -724,7 +737,16 @@ app.get('/coreport', checkAuthenticated, (req, res) => {
                             }
                             clearInterval(interval);
                             console.log(req.user.device_id)
-                            res.render('coreport', { name: req.user.user_name, player: player, first: times, bowl: results.rows })
+                            rows_res = results.rows.length
+                            console.log("Rows = " + rows_res)
+                            x = []
+                            for (var i = 0; i < rows_res; i++) {
+                                x.push("[" + results.rows[i].balls)
+                                x.push(results.rows[i].rotation)
+                                x.push(results.rows[i].hyper_extenstion)
+                                x.push(results.rows[i].posteriorly_rotated + "]")
+                            }
+                            res.render('coreport', { name: req.user.user_name, player: player, first: times, bowl: results.rows, graph: x })
 
                         },
 
@@ -760,7 +782,70 @@ app.post('/coreport', async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
 //-----------------------------------Test-------------------------------------------
+
+
+const gets3 = (request, response) => {
+    const id = 3
+    pool.query(
+        'SELECT * FROM sensordata31 WHERE id::text LIKE $1 ORDER BY serial_no DESC LIMIT 10', [id],
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+
+            response.status(200).json(results.rows)
+        },
+
+    )
+}
+
+const gets1 = (request, response) => {
+    pool.query(
+        'SELECT * FROM sensordata11 ORDER BY serial_no DESC LIMIT 10', ['1'],
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+
+            response.status(200).json(results.rows)
+        },
+
+    )
+}
+
+const gets2 = (request, response) => {
+    pool.query(
+        'SELECT * FROM sensordata21 ORDER BY serial_no DESC LIMIT 10',
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+
+            response.status(200).json(results.rows)
+        },
+
+    )
+}
+
+
+
+app.get('/s3', gets3)
+app.get('/s2', gets2)
+app.get('/s1', gets1)
+
+
+
+
+
 const getres = (request, response) => {
 
 
@@ -778,10 +863,5 @@ const getres = (request, response) => {
 
     )
 }
-
-
-
-
-
 
 app.get('/rep', getres)

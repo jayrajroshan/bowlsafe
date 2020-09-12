@@ -29,6 +29,7 @@
     "express-flash": "0.0.2",
     "express-session": "^1.17.1",
     "fs": "0.0.1-security",
+    "html-pdf": "^2.2.0",
     "json-2-csv": "^3.7.6",
     "node-datetime": "^2.1.2",
     "passport": "^0.4.1",
