@@ -14,7 +14,6 @@
     />
     <style>
       body {
-        height: 100vh;
         font-family: "Nunito", sans-serif;
         background-image: linear-gradient(
             339deg,
@@ -54,13 +53,34 @@
           ),
           linear-gradient(90deg, rgb(255, 255, 255), rgb(255, 255, 255));
       }
+
+      table {
+            border-collapse: collapse;
+            
+        }
+        table, th, td {
+            border: 1px solid rgb(117, 117, 117);
+        }
+        th,td {
+          padding: 0px 5px;
+        }
+
+        
+        .html2canvas-container { width: 3000px !important; height: 3000px !important; }
     </style>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+       
+     
     <script>
-      //const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-      //const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
+      const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+      const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+      //const vw = window.innerWidth;
+      //const vh = window.innerHeight;
+      //var w = document.getElementById("linechart_material").offsetWidth;
+      //var h = document.getElementById("linechart_material").offsetHeight;
+
 
       google.charts.load('current', {'packages':['line']});
       google.charts.setOnLoadCallback(drawChart);
@@ -79,8 +99,10 @@
               title: 'Overview of bowling',
             },
             legend: { position: 'top' },
-            width:  (vw*9)/10,
+            width:  (vw*8)/10,
             height: (vh*4)/10
+            // width:  w,
+            // height: h
           };
 
           var chart = new google.charts.Line(document.getElementById('linechart_material'));
@@ -121,43 +143,64 @@
       </div>
     </nav>
 
-    <div class="container">
-      <h2 class="py-1 text-primary">Hi <%= name %></h2>
-        <a
-          href="/home?player=<%= player %>"
-          class="btn btn-primary mb-2"
-          role="button"
-          aria-disabled="true"
-          >Go to Dashboard</a
-        >
+    <div class="container mt-2">
+      <a
+            href="/home?player=<%= player %>"
+            class="btn btn-primary "
+            id="dash"
+            role="button"
+            aria-disabled="true"
+            >Go to Dashboard</a>
 
-      <div class="container mb-1 text-primary">
-      </div>
-      <h3>Report for: <%= player %></h3>
-      <h4>Total Bowls: <%= bowl.length %></h4>
+      <button id="print-button" type="button" class="btn btn-primary" onclick="printPDF()">Print Report</button>
+    </div>
 
-        <h5>Time Frame</h5>
-        <form class="pb-3" action="/coreport" method="POST">
-        <input type="hidden" name="player" value="<%= player %>" />
-          <select
-            class="form-control"
-            id="select"
-            name="time_f"
-            onchange="this.form.submit()"
-          >
-            <option><%= first %></option>
-            <option>Daily</option>
-            <option>Weekly</option>
-            <option>Monthly</option>
-
-          </select>
-          <noscript><input type="submit" value="Submit" /></noscript>
-        </form>
-      </div>
-
-        <div class="container-fluid">
-          <div class="mb-3 " id="linechart_material"></div>
+    <div class="container p-0" id="print" >
+      <div class="container">
+        <h2 class="py-1 text-primary">Hi <%= name %></h2>
+        <div class="container mb-1 text-primary">
         </div>
+        <h3>Report for: <%= player %></h3>
+        <h4>Total Bowls: <%= bowl.length %></h4>
+  
+          <h5>Time Frame</h5>
+          <form class="pb-3" action="/coreport" method="POST">
+          <input type="hidden" name="player" value="<%= player %>" />
+            <select
+              class="form-control"
+              id="select"
+              name="time_f"
+              onchange="this.form.submit()"
+            >
+              <option><%= first %></option>
+              <option>Daily</option>
+              <option>Weekly</option>
+              <option>Monthly</option>
+  
+            </select>
+            <noscript><input type="submit" value="Submit" /></noscript>
+          </form>
+        </div>
+  
+          <div class="container-fluid">
+            <div class="mb-3 " id="linechart_material"></div>
+          </div>
+          
+          <table class="bg-white m-3">
+            <% if (bowl.length > 0) { %>
+              <tr><td>No.</td><td>Rotation</td><td>Hyper Extension</td><td>Posteriorly Rotated</td><td>Time</td></tr>
+              <% for(var i=0; i<bowl.length; i++) {%>
+                <!-- <%=  unixTimestamp = bowl[i].feed_time%>
+                    <%=  milliseconds = unixTimestamp * 1000 %>
+                    <%=  dateObject = new Date(milliseconds) %>
+                    <%=  humanDateFormat = dateObject.toLocaleString() %> -->
+                <tr><td><%= bowl[i].balls %></td><td class="text-<%= bowl[i].rotation_c %>"><%= bowl[i].rotation %> <br><%= bowl[i].rotation_c %> </td><td  class="text-<%= bowl[i].hyper_extenstion_c %>"><%= bowl[i].hyper_extenstion %> <br><%= bowl[i].hyper_extenstion_c %></td><td class="text-<%= bowl[i].posteriorly_rotated_c %>"><%= bowl[i].posteriorly_rotated %> <br><%= bowl[i].posteriorly_rotated_c %></td><td><%= humanDateFormat %></td></tr>
+                <%  };%>
+            <% }%>
+            
+            </table>
+    </div>
+
 
         <div class="container">
           <ul class="list-group">
@@ -185,9 +228,10 @@
                     <br/>
                 </li>
             <% } %>
-        </ul>
+          </ul>
         </div>
-     
+
+
 
 
     <script
@@ -205,5 +249,46 @@
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
       crossorigin="anonymous"
     ></script>
+    
+    <!-- <script>
+      var doc = new jsPDF();
+      var specialElementHandlers = {
+          '#print': function (element, renderer) {
+              return true;
+          }
+      };
+
+      $('#print-button').click(function () {
+          doc.fromHTML($('#print').html(), 15, 15, {
+              'width': 170,
+                  'elementHandlers': specialElementHandlers
+          });
+          doc.save('sample-file.pdf');
+      });
+    </script> -->
+    <script src="/public/assets/html2pdf.bundle.min.js"></script>
+     <!-- <script>
+       function printPDF() {
+        var element = document.getElementById('print');
+        html2pdf(element);
+       }
+     </script> -->
+
+      <script>
+        function printPDF() {
+          var element = document.getElementById('print');
+          var opt = {
+            margin:       0.5,
+            filename:     'report.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+          };
+
+        // New Promise-based usage:
+        html2pdf().set(opt).from(element).save();
+        }
+      </script>
+
   </body>
 </html>

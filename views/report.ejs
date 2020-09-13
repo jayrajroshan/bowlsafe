@@ -54,6 +54,13 @@
           ),
           linear-gradient(90deg, rgb(255, 255, 255), rgb(255, 255, 255));
       }
+
+        table {
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
     </style>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script>
@@ -110,7 +117,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="/phome"
+            <a class="nav-item nav-link active" href="/home"
               >Home <span class="sr-only">(current)</span></a
             >
             <a class="nav-item nav-link active" href="/logout"
@@ -120,58 +127,77 @@
         </div>
       </div>
     </nav>
+    <div class="container mt-2" >
+      <button id="print-button" type="button" class="btn btn-primary" onclick="printPDF()">Print Report</button>
+    </div>
+
+    <div class="container p-0" id="print">
+      <div class="container">
+        <h2 class="py-3 text-primary" >Hi <%= name %></h2>
+  
+        <h3>Total Bowls: <%= bowl.length %></h3>
+  
+          <h5>Time Frame</h5>
+          <form class="pb-3" action="/report" method="POST">
+            <select
+              class="form-control"
+              id="select"
+              name="time_f"
+              onchange="this.form.submit()"
+            >
+              <option><%= first %></option>
+              <option>Daily</option>
+              <option>Weekly</option>
+              <option>Monthly</option>
+  
+            </select>
+            <noscript><input type="submit" value="Submit" /></noscript>
+          </form>
+        </div>
+  
+        <div class="container">
+          <div class="mb-3 " id="linechart_material"></div>
+        </div>
+  
+        <div class="container">
+          <h3 class="mt-3">Player Report</h3>
+            <table class="bg-white mb-3">
+            <% if (bowl.length > 0) { %>
+              <tr><td>No.</td><td>Rotation</td><td>Hyper Extension</td><td>Posteriorly Rotated</td><td>Time</td></tr>
+              <% for(var i=0; i<bowl.length; i++) {%>
+                <!-- <%=  unixTimestamp = bowl[i].feed_time%>
+                    <%=  milliseconds = unixTimestamp * 1000 %>
+                    <%=  dateObject = new Date(milliseconds) %>
+                    <%=  humanDateFormat = dateObject.toLocaleString() %> -->
+                <tr><td><%= bowl[i].balls %></td><td class="text-<%= bowl[i].rotation_c %>"><%= bowl[i].rotation %> <br><%= bowl[i].rotation_c %> </td><td  class="text-<%= bowl[i].hyper_extenstion_c %>"><%= bowl[i].hyper_extenstion %> <br><%= bowl[i].hyper_extenstion_c %></td><td class="text-<%= bowl[i].posteriorly_rotated_c %>"><%= bowl[i].posteriorly_rotated %> <br><%= bowl[i].posteriorly_rotated_c %></td><td><%= humanDateFormat %></td></tr>
+                <%  };%>
+            <% }%>
+            </table>
+        </div>
+    </div>
 
     <div class="container">
-      <h2 class="py-3 text-primary">Hi <%= name %></h2>
+      <ul class="list-group ">
+        <% for(var i=0; i<bowl.length; i++) {%>
+            <li class="list-group-item ">
+              <span " >Bowl Number: </span><%= bowl[i].balls %>
+              <br/>
+              <span class="text-<%= bowl[i].rotation_c %>" >Rotation: </span><%= bowl[i].rotation %>
+              <br/>
+              <span class="text-<%= bowl[i].hyper_extenstion_c %>" >Hyper Extension: </span><%= bowl[i].hyper_extenstion %>
+              <br/>
+              <span class="text-<%= bowl[i].posteriorly_rotated_c %>" >Posteriorly Rotated: </span><%= bowl[i].posteriorly_rotated %>
+              <!-- <%=  unixTimestamp = bowl[i].feed_time%>
+              <%=  milliseconds = unixTimestamp * 1000 %>
+              <%=  dateObject = new Date(milliseconds) %>
+              <%=  humanDateFormat = dateObject.toLocaleString() %> -->
+              <br/>
+              <span>Time: </span><%= humanDateFormat %>
+          </li>
+        <% } %>
+      </ul>
+  </div>
 
-      <h3>Total Bowls: <%= bowl.length %></h3>
-
-        <h5>Time Frame</h5>
-        <form class="pb-3" action="/report" method="POST">
-          <select
-            class="form-control"
-            id="select"
-            name="time_f"
-            onchange="this.form.submit()"
-          >
-            <option><%= first %></option>
-            <option>Daily</option>
-            <option>Weekly</option>
-            <option>Monthly</option>
-
-          </select>
-          <noscript><input type="submit" value="Submit" /></noscript>
-        </form>
-      </div>
-      <div class="container-fluid">
-        <div class="mb-3 " id="linechart_material"></div>
-      </div>
-
-      <div class="container">
-          <ul class="list-group ">
-            <% for(var i=0; i<bowl.length; i++) {%>
-                <li class="list-group-item ">
-                  <span " >Bowl Number: </span><%= bowl[i].balls %>
-                  <br/>
-                  <span class="text-<%= bowl[i].rotation_c %>" >Rotation: </span><%= bowl[i].rotation %>
-                  <br/>
-                  <span class="text-<%= bowl[i].hyper_extenstion_c %>" >Hyper Extension: </span><%= bowl[i].hyper_extenstion %>
-                  <br/>
-                  <span class="text-<%= bowl[i].posteriorly_rotated_c %>" >Posteriorly Rotated: </span><%= bowl[i].posteriorly_rotated %>
-                  <!-- <%=  unixTimestamp = bowl[i].feed_time%>
-                  <%=  milliseconds = unixTimestamp * 1000 %>
-                  <%=  dateObject = new Date(milliseconds) %>
-                  <%=  humanDateFormat = dateObject.toLocaleString() %> -->
-                  <br/>
-                  <span>Time: </span><%= humanDateFormat %>
-              </li>
-            <% } %>
-          </ul>
-      </div>
-        
-      
-
-    
 
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -188,5 +214,21 @@
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
       crossorigin="anonymous"
     ></script>
+    <script src="/public/assets/html2pdf.bundle.min.js"></script>
+    <script>
+      function printPDF() {
+        var element = document.getElementById('print');
+        var opt = {
+          margin:       0.5,
+          filename:     'report.pdf',
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2 },
+          jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+      // New Promise-based usage:
+      html2pdf().set(opt).from(element).save();
+      }
+    </script>
   </body>
 </html>

@@ -408,7 +408,6 @@ app.post('/studentreg', async (req, res) => {
             },
 
         )
-        res.send("New Player Added")
         res.redirect('/home')
     }
     catch{
@@ -779,8 +778,6 @@ app.post('/coreport', async (req, res) => {
         console.log("Error")
     }
 })
-
-
 
 
 
