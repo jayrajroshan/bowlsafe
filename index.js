@@ -210,11 +210,13 @@ var avg3 = null;
 var avg31 = null;
 
 function myFun() {
+
     sensor2 = sensorQuery2.rows;
-    console.log(sensorQuery2.rows[0].id)
-    console.log(sensorQuery2.rows[0].serial_no)
+    //console.log(sensor2)
+    //console.log(sensorQuery2.rows[0].id)
+    //console.log(sensorQuery2.rows[0].serial_no)
     sensor3 = sensorQuery3.rows;
-    console.log(sensorQuery3.rows[0].id)
+    //console.log(sensorQuery3.rows[0].id)
 
     for (var i in sensor2) roll2.push((sensor2[i].imu2_roll) + 0.3)
     for (var i in sensor3) roll3.push((sensor3[i].imu3_roll) - 0.1)

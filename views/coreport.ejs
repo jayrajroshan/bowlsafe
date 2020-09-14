@@ -56,6 +56,7 @@
 
       table {
             border-collapse: collapse;
+            width: 90%;
             
         }
         table, th, td {
@@ -65,7 +66,9 @@
           padding: 0px 5px;
         }
 
-        
+        .chart{
+
+        }
         .html2canvas-container { width: 3000px !important; height: 3000px !important; }
     </style>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -74,12 +77,7 @@
        
      
     <script>
-      const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-      const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-      //const vw = window.innerWidth;
-      //const vh = window.innerHeight;
-      //var w = document.getElementById("linechart_material").offsetWidth;
-      //var h = document.getElementById("linechart_material").offsetHeight;
+
 
 
       google.charts.load('current', {'packages':['line']});
@@ -94,13 +92,29 @@
           data.addColumn('number', 'Posteriorly Rotated');
 
           data.addRows([<%= graph%>]);
+          $(document).ready(function () {
+              putQR();
+          });
+
+          $(window).resize(function () {
+              putQR();
+          });
+
+          function putQR() {
+              var chartDiv = $('#chart');
+              var graphWidth = $(chartDiv).width();
+              var graphHeight = graphWidth * 0.8;
+              if (graphHeight >= 1000) {
+                  graphHeight = 1000;
+
+              } 
           var options = {
             chart: {
               title: 'Overview of bowling',
             },
             legend: { position: 'top' },
-            width:  (vw*8)/10,
-            height: (vh*4)/10
+            width:  graphWidth,
+            height: graphHeight
             // width:  w,
             // height: h
           };
@@ -109,6 +123,7 @@
 
           chart.draw(data, google.charts.Line.convertOptions(options));
         }
+      }
     </script>
     <!-- <script src="/public/assets/speed-data.js"></script> -->
   </head>
@@ -167,7 +182,7 @@
         <%=  time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()%>
         <%= dateTime = date+' '+time%>
         <%= dateTime1 = dateTime.toLocaleString()%> -->
-        
+
         <h5>Current time: <%= dateTime1 %></h5>
 
           <h5>Time Frame</h5>
@@ -189,7 +204,7 @@
           </form>
         </div>
   
-          <div class="container-fluid">
+          <div class="container-sm chart ">
             <div class="mb-3 " id="linechart_material"></div>
           </div>
           
@@ -285,11 +300,11 @@
         function printPDF() {
           var element = document.getElementById('print');
           var opt = {
-            margin:       0.5,
+            margin:       0.1,
             filename:     'report.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 },
-            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            html2canvas:  { scale: 2.5 },
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
           };
 
         // New Promise-based usage:
