@@ -25,7 +25,7 @@ const gets3 = (request, response) => {
 
 
 
-    const id = 1
+    const id = 3
     pool.query(
         'SELECT * FROM sensordata31 WHERE id::text LIKE $1 ORDER BY serial_no DESC LIMIT 10', [id],
         (error, results) => {
@@ -234,7 +234,7 @@ function myFun() {
     //console.log("Sensor 3:" + sensor3[0].serial_no)
 
 }
-setInterval(queryFunction, 1000, 1);
+setInterval(queryFunction, 1000, 3);
 
 // setInterval(queryFunction, 1000);
 
@@ -243,7 +243,7 @@ const getres = (request, response) => {
 
 
 
-    const id = 1
+    const id = 3
     pool.query(
         'SELECT * FROM bowl_result',
         (error, results) => {
