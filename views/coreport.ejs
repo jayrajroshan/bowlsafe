@@ -162,7 +162,13 @@
         </div>
         <h3>Report for: <%= player %></h3>
         <h4>Total Bowls: <%= bowl.length %></h4>
-  
+         <!-- <%= today = new Date()%>
+        <%=  date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()%>
+        <%=  time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()%>
+        <%= dateTime = date+' '+time%>
+        <%= dateTime1 = dateTime.toLocaleString()%> -->
+        <h5>Current time: <%= dateTime1 %></h5>
+
           <h5>Time Frame</h5>
           <form class="pb-3" action="/coreport" method="POST">
           <input type="hidden" name="player" value="<%= player %>" />

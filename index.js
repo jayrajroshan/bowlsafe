@@ -154,7 +154,7 @@ app.post('/home', async (req, res) => {
         const player_name = req.body.player
         res.redirect('home/?player=' + player_name)
     }
-    catch{
+    catch {
         console.log("Error")
     }
 })
@@ -360,7 +360,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
         }
 
     }
-    catch{
+    catch {
         res.redirect('/register')
     }
 })
@@ -410,7 +410,7 @@ app.post('/studentreg', async (req, res) => {
         )
         res.redirect('/home')
     }
-    catch{
+    catch {
         res.redirect('/studentreg')
     }
 })
@@ -448,7 +448,7 @@ app.post('/update', async (req, res) => {
 
         )
     }
-    catch{
+    catch {
         res.redirect('/update')
     }
 })
@@ -611,7 +611,7 @@ app.post('/report', async (req, res) => {
         const time_frame = req.body.time_f
         res.redirect('report/?time=' + time_frame)
     }
-    catch{
+    catch {
         console.log("Error")
     }
 })
@@ -774,7 +774,7 @@ app.post('/coreport', async (req, res) => {
         const player = req.body.player
         res.redirect('coreport/?time=' + time_frame + '&player=' + player)
     }
-    catch{
+    catch {
         console.log("Error")
     }
 })

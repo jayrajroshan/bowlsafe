@@ -134,8 +134,17 @@
     <div class="container p-0" id="print">
       <div class="container">
         <h2 class="py-3 text-primary" >Hi <%= name %></h2>
-  
+        
+        <!-- <%= today = new Date()%>
+        <%=  date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()%>
+        <%=  time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()%>
+        <%= dateTime = date+' '+time%>
+        <%= dateTime1 = dateTime.toLocaleString()%> -->
+
+
         <h3>Total Bowls: <%= bowl.length %></h3>
+        <h5>Current time: <%= dateTime1 %></h5>
+
   
           <h5>Time Frame</h5>
           <form class="pb-3" action="/report" method="POST">
